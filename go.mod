@@ -19,11 +19,12 @@ require (
 	github.com/nezhahq/service v0.0.0-20240704142721-eba37f9cc709
 	github.com/quic-go/quic-go v0.40.1
 	github.com/refraction-networking/utls v1.6.1
-	github.com/shirou/gopsutil/v4 v4.24.6
+	github.com/shirou/gopsutil/v4 v4.24.7
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
+	github.com/uubulb/darwinsmc v0.0.0-20240829230415-bf720cf42137
 	golang.org/x/net v0.26.0
-	golang.org/x/sys v0.22.0
+	golang.org/x/sys v0.23.0
 	google.golang.org/grpc v1.64.1
 	google.golang.org/protobuf v1.34.2
 	sigs.k8s.io/yaml v1.4.0

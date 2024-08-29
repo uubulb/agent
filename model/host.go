@@ -25,7 +25,7 @@ type HostState struct {
 	TcpConnCount   uint64
 	UdpConnCount   uint64
 	ProcessCount   uint64
-	Temperatures   []SensorTemperature
+	Temperatures   []*SensorTemperature
 	GPU            float64
 }
 

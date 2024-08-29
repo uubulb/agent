@@ -18,11 +18,11 @@ import (
 	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/shirou/gopsutil/v4/process"
-	"github.com/shirou/gopsutil/v4/sensors"
 
 	"github.com/nezhahq/agent/model"
 	"github.com/nezhahq/agent/pkg/gpu"
 	gpustat "github.com/nezhahq/agent/pkg/gpu/stat"
+	"github.com/nezhahq/agent/pkg/sensors"
 	"github.com/nezhahq/agent/pkg/util"
 )
 
@@ -41,7 +41,7 @@ var (
 var (
 	netInSpeed, netOutSpeed, netInTransfer, netOutTransfer, lastUpdateNetStats uint64
 	cachedBootTime                                                             time.Time
-	temperatureStat                                                            []model.SensorTemperature
+	temperatureStat                                                            []*model.SensorTemperature
 )
 
 // 获取设备数据的最大尝试次数
@@ -368,23 +368,13 @@ func updateTemperatureStat() {
 	defer atomic.StoreInt32(&updateTempStatus, 0)
 
 	if statDataFetchAttempts["Temperatures"] < maxDeviceDataFetchAttempts {
-		temperatures, err := sensors.SensorsTemperatures()
+		ts, err := sensors.GetTemperatures()
 		if err != nil {
 			statDataFetchAttempts["Temperatures"]++
 			printf("host.SensorsTemperatures error: %v, attempt: %d", err, statDataFetchAttempts["Temperatures"])
 		} else {
 			statDataFetchAttempts["Temperatures"] = 0
-			tempStat := []model.SensorTemperature{}
-			for _, t := range temperatures {
-				if t.Temperature > 0 {
-					tempStat = append(tempStat, model.SensorTemperature{
-						Name:        t.SensorKey,
-						Temperature: t.Temperature,
-					})
-				}
-			}
-
-			temperatureStat = tempStat
+			temperatureStat = ts
 		}
 	}
 }
